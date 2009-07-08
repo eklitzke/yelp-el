@@ -2,47 +2,6 @@
 ;; Yelp services
 ;;-----------------------------------------------------------------------------
 
-;; IRC
-
-(defun irc ()
-  (interactive)
-  (require 'tls)
-  (require 'erc)
-  (setq erc-auto-query 'buffer)
-  (setq erc-track-exclude-types '("NICK"))
-  (setq erc-track-use-faces t)
-  (setq erc-track-faces-priority-list '(erc-current-nick-face))
-
-  (setq erc-autojoin-channels-alist
-		'(("irc.yelpcorp.com" "#yelp")))
-  (erc-tls :server *yelp-irc-host* 
-		   :port *yelp-irc-port* 
-		   :nick *yelp-username* 
-		   :password *yelp-irc-password*))
-
-;; Mail
-
-(setq user-mail-address (concat *yelp-username* "@yelp.com"))
-(setq user-full-name *yelp-fullname*)
-
-(setq gnus-select-method '(nnimap "gmail"
-								  (nnimap-address "imap.gmail.com")
-								  (nnimap-server-port 993)
-								  (nnimap-stream ssl)
-								  (gnus-summary-line-format "%U%R%i %B%(%[%4L: %-23,23f%]%) %s\n")
-								  (nnir-search-engine imap)))
-
-(setq message-send-mail-function 'smtpmail-send-it
-	  smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-	  smtpmail-auth-credentials '(("smtp.gmail.com" 587 user-mail-address nil))
-	  smtpmail-default-smtp-server "smtp.gmail.com"
-	  smtpmail-smtp-server "smtp.gmail.com"
-	  smtpmail-smtp-service 587)
-
-;; Jabber
-
-(require 'jabber-autoloads)
-
 ;;-----------------------------------------------------------------------------
 ;; Yelp helper code
 ;;-----------------------------------------------------------------------------
