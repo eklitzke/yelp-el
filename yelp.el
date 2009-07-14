@@ -46,6 +46,21 @@
 		 (branch (car (split-branch "pg" filename))))
 	(if branch (file-name-nondirectory branch) nil)))
 
+(defun yelp-branch-name (&optional fname)
+  "Get the branch name. NOTE: there's a bug if you do /foo/bar/pg//hi"
+  (let* ((fpath (directory-file-name (or fname buffer-file-name "")))
+		 (lst (reverse (split-string fpath "/")))
+		 (branch-path))
+	(while lst
+	  (if (string-equal (car lst) "pg")
+		  (progn
+			(setq branch-path (and bn (append (reverse (cdr lst)) (list "pg" bn))))
+			(setq lst nil))
+		(setq bn (car lst)))
+	  (setq lst (cdr lst)))
+	(setq branch-path (mapconcat 'identity branch-path "/"))
+	(and (not (string-equal branch-path "")) branch-path)))
+
 ;;=====================================
 ;; File navigation
 ;;=====================================
